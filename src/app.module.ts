@@ -1,8 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ApolloDriver } from '@nestjs/apollo';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -15,7 +19,13 @@ import { AppService } from './app.service';
       password: process.env.DB_POSTGRESQL_PASSWORD,
       database: process.env.DB_POSTGRESQL_DBNAME,
       entities: ['dist/**/*.entity{.ts,.js}'],
+      synchronize: true,
     }),
+    GraphQLModule.forRoot({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
