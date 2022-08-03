@@ -23,7 +23,7 @@ export class UserService {
     if (!userSaved) {
       throw new InternalServerErrorException('Erro ao criar usuário');
     }
-    return this.userRepository.save(userSaved);
+    return userSaved;
   }
 
   async getUserById(id: string): Promise<User> {
@@ -48,14 +48,16 @@ export class UserService {
 
   async updateUser(data: UpdateUserInput): Promise<User> {
     const user = await this.getUserById(data.id);
-    return this.userRepository.save({ ...user, ...data });
+    await this.userRepository.update(user, { ...data });
+    return this.userRepository.create({ ...user, ...data });
   }
 
-  async deleteUser(id: string): Promise<void> {
+  async deleteUser(id: string): Promise<boolean> {
     const user = await this.getUserById(id);
     const userDeleted = await this.userRepository.delete(user);
-    if (!userDeleted) {
-      throw new InternalServerErrorException();
+    if (userDeleted) {
+      return true;
     }
+    return false;
   }
 }
