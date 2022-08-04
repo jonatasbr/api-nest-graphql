@@ -4,7 +4,7 @@ import {
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import TestUtil from '../common/test/TestUtil';
+import TestUtil from '../../common/test/TestUtil';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
