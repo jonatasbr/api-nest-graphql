@@ -4,6 +4,8 @@ import { User } from './user.entity';
 import { UserService } from './user.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { GqlAuthGuard } from '../auth/auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver('User')
 export class UserResolver {
@@ -25,6 +27,7 @@ export class UserResolver {
   }
 
   @Query(() => [User])
+  @UseGuards(GqlAuthGuard)
   async users(): Promise<User[]> {
     return await this.userService.findAllUsers();
   }
