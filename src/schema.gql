@@ -23,10 +23,12 @@ type Mutation {
 input CreateUserInput {
   name: String!
   email: String!
+  password: String!
 }
 
 input UpdateUserInput {
   id: String
   name: String
   email: String
+  password: String
 }
