@@ -21,10 +21,7 @@ export class AuthService {
     });
     const passAgainstTimeAttack = user?.password || 'pass';
     const validPassword = compareSync(data.password, passAgainstTimeAttack);
-    if (!user) {
-      throw new UnauthorizedException('Credenciais inválidas');
-    }
-    if (!validPassword) {
+    if (!user || !validPassword) {
       throw new UnauthorizedException('Credenciais inválidas');
     }
     const token = await this.jwtToken(user);
